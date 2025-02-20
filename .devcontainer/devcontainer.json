@@ -1,9 +1,6 @@
 {
   "name": "hackerhouse_basic",
   "image": "ghcr.io/dfinity/icp-dev-env:16",
-  "features": {
-    "git-lfs": "latest"
-  },
   "forwardPorts": [4943, 8080],
   "portsAttributes": {
     "4943": {
