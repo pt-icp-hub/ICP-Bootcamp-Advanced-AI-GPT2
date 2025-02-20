@@ -1,6 +1,9 @@
 {
   "name": "hackerhouse_basic",
   "image": "ghcr.io/dfinity/icp-dev-env:16",
+  "features": {
+    "git-lfs": "latest"
+  },
   "forwardPorts": [4943, 8080],
   "portsAttributes": {
     "4943": {
@@ -20,10 +23,15 @@
       "extensions": [
         "dfinity-foundation.vscode-motoko",
         "ms-python.python",
+        "tamasfe.even-better-toml",
+        "rust-lang.rust-analyzer",
         "GitHub.copilot",
         "esbenp.prettier-vscode"
       ],
-      "settings": { "editor.formatOnSave": true }
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
     }
   }
 }
