@@ -6,8 +6,6 @@ Launch a Chat GPT 2 fully on chain and interact with it from a frontend that is 
 
 This project implements GPT-2 inference on the Internet Computer blockchain, providing a straightforward way to deploy and interact with the model.
 
-
-
 ## Analysis
 
 ### Raw Instruction Counts
