@@ -2,6 +2,78 @@
 
 Launch a Chat GPT 2 fully on chain and interact with it from a frontend that is also on chain.
 
+## Bootcamp Installation Instructions
+
+This project is meant to run with a Codespace, and it will already setup everything related with Rust, Wasm tooling on top of dfx tooling.
+
+After you start the codespace, please wait for it to finish it's setup (tip: look into a temporary file called "nohup.out").
+
+Afterwards, do each of these steps:
+
+1. Install "wasm-opt" and while you wai (average time ~12 minutes)
+
+```bash
+cargo install wasm-opt
+```
+
+2. Download the model and add it to the right folder
+
+The project uses the GPT-2 Open Instruct v1 model. You'll need to download the following file from Hugging Face: model.safetensors (`https://huggingface.co/vicgalle/gpt2-open-instruct-v1/tree/main`)
+
+Please add it to folder `lib/model`.
+
+3. After wasm-opt has finished, you are ready to deploy
+
+Run `dfx start` and in another tab `dfx deploy`
+
+4. Upload the model files:
+
+```bash
+ic-file-uploader model append_safetensors_bytes lib/model/model.safetensors
+dfx canister call model store_safetensors_bytes_to_stable
+dfx canister call model load_safetensors_bytes_from_stable
+
+ic-file-uploader model append_config_bytes lib/model/config.json
+dfx canister call model setup_model
+
+ic-file-uploader model append_tokenizer_bytes lib/model/tokenizer.json
+dfx canister call model store_tokenizer_bytes_to_stable
+dfx canister call model load_tokenizer_bytes_from_stable
+dfx canister call model setup_tokenizer
+```
+
+## Interacting with the Model
+
+You can interact with the model in two ways:
+
+1. Direct token inference:
+
+```bash
+dfx canister call model inference '(vec {1; 2}, 1:nat8, 0.2:float64)'
+```
+
+Parameters:
+
+- Input token sequence
+- Generation length (nat8)
+- Sampling temperature (float64)
+
+2. Text generation:
+
+```bash
+dfx canister call model generate '("what is the capital of France?", 10:nat8, 0.2:float64)'
+```
+
+Parameters:
+
+- Input text
+- Generation length (nat8)
+- Sampling temperature (float64)
+
+Note: The maximum length of response (number of tokens generated / generation length) depends on the input length. There is a finite amount of compute and generating the next work for a longer sequence of tokens requires more computation.
+
+# README FROM GPT2 Project
+
 # GPT-2 on the Internet Computer
 
 This project implements GPT-2 inference on the Internet Computer blockchain, providing a straightforward way to deploy and interact with the model.
@@ -81,6 +153,12 @@ rustup target add wasm32-wasi
 
 ```bash
 cargo install wasi2ic
+```
+
+Install "wasm-opt" and wait (average time ~12 minutes)
+
+```bash
+cargo install wasm-opt
 ```
 
 ## Model Setup
